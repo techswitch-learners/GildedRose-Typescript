@@ -3,12 +3,6 @@ import {Item, GildedRose} from '../app/gilded-rose';
 
 describe('Gilded Rose', function () {
 
-    // it('should foo', function() {
-    //     const gildedRose = new GildedRose([ new Item('foo', 0, 0) ]);
-    //     const items = gildedRose.updateQuality();
-    //     expect(items[0].name).to.equal('fixme');
-    // });
-
     it('should decrease the sellIn and quality by 1 of a basic item', function () {
         const gildedRose = new GildedRose([new Item('cricket bat', 5, 50)]);
 
@@ -51,9 +45,8 @@ describe('Gilded Rose', function () {
 
     it('The Quality of "Backstage passes" is never more than 50', function () {
         const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 15, 50)]);
-        // console.log(gildedRose);
         const items = gildedRose.updateQuality();
-        expect(items[0].quality).to.equal(50); //but WHY?!
+        expect(items[0].quality).to.equal(50);
     });
 
     it('"Sulfuras", being a legendary item, never has to be sold or decreases in Quality', function() {
@@ -64,9 +57,29 @@ describe('Gilded Rose', function () {
         expect(items[0].sellIn).to.equal(5);
     });
 
-    // it('"Backstage passes", like aged brie, increases in Quality as its SellIn value approaches', function() {
-    //
-    // });
+    it('"Backstage passes", like aged brie, increases in Quality as its SellIn value approaches', function() {
+        const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 15, 25)]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).to.equal(26);
+    });
+
+    it('"Backstage passes": Quality increases by 2 when there are 10 days or less', function() {
+        const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 10, 25)]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).to.equal(27);
+    });
+
+    it('"Backstage passes": Quality increases by 3 when there are 5 days or less', function() {
+        const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 5, 25)]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).to.equal(28);
+    });
+
+    it('"Backstage passes": Quality drops to 0 after the concert', function() {
+        const gildedRose = new GildedRose([new Item('Backstage passes to a TAFKAL80ETC concert', 0, 25)]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).to.equal(0);
+    });
 
     // it('"Conjured" items degrade in Quality twice as fast as normal items', function() {
 
